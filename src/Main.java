@@ -1,63 +1,62 @@
+import static java.util.Arrays.*;
+public final Scanner scanner = new Scanner(System.in);
+
 void main() {
     IO.println(String.format("Hello and welcome!"));
 
-    var scanner = new Scanner(System.in);
-
     String original = "Hangman";
-    List<String> askedWordByChars = new ArrayList<>();
-    String[] askedWordUnderlines = original.split(" ");
+    String[] askedWordUnderlines = new String[original.length()];
 
-    for(int i = 0; i < original.length() * 2; i++) {
-        System.out.print("Original: " + original);
-        System.out.println("\tUnderlines: " + askedWordUnderlines.toString());
-        System.out.print("Orginial.length()" + original.length());
 
-        if(askedWordUnderlines[i] == " " || askedWordUnderlines[i] == "_") {
-            askedWordUnderlines[i] = "_";
-        }
+    for(int i = 0; i < original.length(); i++) {
+        askedWordUnderlines[i] = "_ ";
     }
 
-    System.out.println(original);
-    System.out.println(askedWordUnderlines);
+    boolean isGame = game(original, askedWordUnderlines);
+    while(isGame) {
+        System.out.println(original);
+        printUnderlinesAsked(askedWordUnderlines);
 
-    int letterUnclocked = 0;
-    char guessLetter = ' ';
-
-    fillAskedWordList(original, askedWordByChars);
-
-    while(isGame(letterUnclocked, original.length()))
-    {
-        System.out.print("Guess the word: ");
-        String termInput = scanner.next();
-
-        if(termInput.length() > 1 || termInput.isEmpty()) {
-            System.out.print("\nPlease enter a LETTER again: ");
-            termInput = scanner.next();
-        }
-        else {
-            if (original.contains(termInput)) {
-                int n =  original.indexOf(termInput);
-                askedWordUnderlines[n] = termInput;
-            }
-
-        }
-
-        guessLetter = (termInput).charAt(0);
-
-
+        isGame = game(original, askedWordUnderlines);
+        printUnderlinesAsked(askedWordUnderlines);
     }
+
 }
 
-boolean isGame(int letterUnclocked, int askedWordLength) {
+private boolean game(String original, String[] askedWordUnderlines) {
 
-    if (letterUnclocked <= askedWordLength) {
+    int guessed = 0;
+    int shouldBeGuessed = original.length();
+    char attempt = ' ';
+
+    while (guessed < shouldBeGuessed) {
+
+        System.out.print("Enter char: ");
+        attempt = scanner.next().charAt(0);
+
+        if(original.contains(String.valueOf(attempt))) {
+            for (int i = 0; i < original.length(); i++) {
+                if (original.charAt(i) == attempt) {
+                    askedWordUnderlines[i] = String.valueOf(attempt);
+                    guessed++;
+                    printUnderlinesAsked(askedWordUnderlines);
+                }
+            }
+        }
+    }
+    if (guessed == shouldBeGuessed) {
+        System.out.print("Finish, thanks for playing!");
+        return false;
+    }
+    else {
         return true;
     }
-    return false;
 }
 
-void fillAskedWordList(String askedWord, List<String> askedWordByChars) {
-    for(int i = 0; i < askedWord.length(); i++) {
-        askedWordByChars.add(askedWord.charAt(i) + "");
+void printUnderlinesAsked(String[] askedWordUnderlines)
+{
+    for (String letter : askedWordUnderlines) {
+        System.out.print(letter + " ");
     }
+    System.out.println();
 }
