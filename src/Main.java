@@ -11,16 +11,10 @@ void main() {
     for(int i = 0; i < original.length(); i++) {
         askedWordUnderlines[i] = "_ ";
     }
-
-    boolean isGame = game(original, askedWordUnderlines);
-    while(isGame) {
         // System.out.println(original);
         printUnderlinesAsked(askedWordUnderlines);
-
-        isGame = game(original, askedWordUnderlines);
+        game(original, askedWordUnderlines);
         printUnderlinesAsked(askedWordUnderlines);
-    }
-
 }
 
 private boolean game(String original, String[] askedWordUnderlines) {
