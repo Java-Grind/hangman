@@ -14,7 +14,7 @@ void main() {
 
     boolean isGame = game(original, askedWordUnderlines);
     while(isGame) {
-        System.out.println(original);
+        // System.out.println(original);
         printUnderlinesAsked(askedWordUnderlines);
 
         isGame = game(original, askedWordUnderlines);
